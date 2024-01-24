@@ -4,16 +4,25 @@ import LogoSvg from '@assets/logo.svg'
 import { Input } from '@components/Input'
 import { Image } from 'react-native'
 import { Button } from '../components/Button'
+import { useNavigation } from '@react-navigation/native'
+import { AuthRoutesProps } from '../routes/auth.routes'
 
 export const SignIn = () => {
+  const navigation = useNavigation<AuthRoutesProps>()
+
+  const handleNewAccount = () => {
+    navigation.navigate('signUp')
+  }
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
-      <VStack flex={1} bg="$gray700" px="$10" pb="$16">
+      <VStack flex={1} px="$10" pb="$16">
         <Image
           source={BackgroundImg}
+          defaultSource={BackgroundImg}
           alt="Pessoas treinando"
           resizeMode="contain"
           style={{
@@ -52,7 +61,11 @@ export const SignIn = () => {
             Não tem uma conta?
           </Text>
 
-          <Button title="Criar conta" variant="outline" />
+          <Button
+            title="Criar conta"
+            variant="outline"
+            onPress={handleNewAccount}
+          />
         </Center>
       </VStack>
     </ScrollView>
