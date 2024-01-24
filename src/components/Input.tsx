@@ -1,11 +1,12 @@
 import { Input as GlueInput, InputField } from '@gluestack-ui/themed'
+import { ComponentProps } from 'react'
 
 type InputProps = {
   placeholder: string
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad'
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters'
   secureTextEntry?: boolean
-}
+} & ComponentProps<typeof GlueInput>
 
 export const Input = ({
   placeholder,
