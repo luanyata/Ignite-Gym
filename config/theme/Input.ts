@@ -1,47 +1,47 @@
-import { createStyle } from '@gluestack-style/react';
+import { createStyle } from '@gluestack-style/react'
 
 export const Input = createStyle({
-  'borderWidth': 1,
-  'borderColor': '$backgroundLight300',
-  'borderRadius': '$sm',
-  'flexDirection': 'row',
-  'overflow': 'hidden',
-  'alignContent': 'center',
+  borderWidth: 1,
+  borderColor: '$backgroundLight300',
+  borderRadius: '$sm',
+  flexDirection: 'row',
+  overflow: 'hidden',
+  alignContent: 'center',
 
   ':hover': {
     borderColor: '$borderLight400',
   },
 
   ':focus': {
-    'borderColor': '$primary700',
+    borderColor: '$primary700',
     ':hover': {
       borderColor: '$primary700',
     },
   },
 
   ':disabled': {
-    'opacity': 0.4,
+    opacity: 0.4,
     ':hover': {
       borderColor: '$backgroundLight300',
     },
   },
 
-  '_input': {
+  _input: {
     py: 'auto',
     px: '$3',
   },
 
-  '_icon': {
+  _icon: {
     color: '$textLight400',
   },
 
-  '_dark': {
-    'borderColor': '$borderDark700',
+  _dark: {
+    borderColor: '$borderDark700',
     ':hover': {
       borderColor: '$borderDark400',
     },
     ':focus': {
-      'borderColor': '$primary400',
+      borderColor: '$primary400',
       ':hover': {
         borderColor: '$primary400',
       },
@@ -53,7 +53,7 @@ export const Input = createStyle({
     },
   },
 
-  'variants': {
+  variants: {
     size: {
       xl: {
         h: '$12',
@@ -110,16 +110,16 @@ export const Input = createStyle({
     },
     variant: {
       underlined: {
-        '_input': {
+        _input: {
           _web: {
             outlineWidth: 0,
             outline: 'none',
           },
           px: '$0',
         },
-        'borderWidth': 0,
-        'borderRadius': 0,
-        'borderBottomWidth': '$1',
+        borderWidth: 0,
+        borderRadius: 0,
+        borderBottomWidth: '$1',
         ':focus': {
           borderColor: '$primary700',
           _web: {
@@ -127,16 +127,16 @@ export const Input = createStyle({
           },
         },
         ':invalid': {
-          'borderBottomWidth': 2,
-          'borderBottomColor': '$error700',
-          '_web': {
+          borderBottomWidth: 2,
+          borderBottomColor: '$error700',
+          _web: {
             boxShadow: 'inset 0 -1px 0 0 $error700',
           },
           ':hover': {
             borderBottomColor: '$error700',
           },
           ':focus': {
-            'borderBottomColor': '$error700',
+            borderBottomColor: '$error700',
             ':hover': {
               borderBottomColor: '$error700',
               _web: {
@@ -153,7 +153,7 @@ export const Input = createStyle({
             },
           },
         },
-        '_dark': {
+        _dark: {
           ':focus': {
             borderColor: '$primary400',
             _web: {
@@ -161,15 +161,15 @@ export const Input = createStyle({
             },
           },
           ':invalid': {
-            'borderColor': '$error400',
-            '_web': {
+            borderColor: '$error400',
+            _web: {
               boxShadow: 'inset 0 -1px 0 0 $error400',
             },
             ':hover': {
               borderBottomColor: '$error400',
             },
             ':focus': {
-              'borderBottomColor': '$error400',
+              borderBottomColor: '$error400',
               ':hover': {
                 borderBottomColor: '$error400',
                 _web: {
@@ -190,7 +190,7 @@ export const Input = createStyle({
       },
 
       outline: {
-        '_input': {
+        _input: {
           _web: {
             outlineWidth: 0,
             outline: 'none',
@@ -203,15 +203,15 @@ export const Input = createStyle({
           },
         },
         ':invalid': {
-          'borderColor': '$error700',
-          '_web': {
+          borderColor: '$error700',
+          _web: {
             boxShadow: 'inset 0 0 0 1px $error700',
           },
           ':hover': {
             borderColor: '$error700',
           },
           ':focus': {
-            'borderColor': '$error700',
+            borderColor: '$error700',
             ':hover': {
               borderColor: '$error700',
               _web: {
@@ -228,7 +228,7 @@ export const Input = createStyle({
             },
           },
         },
-        '_dark': {
+        _dark: {
           ':focus': {
             borderColor: '$primary400',
             _web: {
@@ -236,15 +236,15 @@ export const Input = createStyle({
             },
           },
           ':invalid': {
-            'borderColor': '$error400',
-            '_web': {
+            borderColor: '$error400',
+            _web: {
               boxShadow: 'inset 0 0 0 1px $error400',
             },
             ':hover': {
               borderColor: '$error400',
             },
             ':focus': {
-              'borderColor': '$error400',
+              borderColor: '$error400',
               ':hover': {
                 borderColor: '$error400',
                 _web: {
@@ -265,8 +265,8 @@ export const Input = createStyle({
       },
 
       rounded: {
-        'borderRadius': 999,
-        '_input': {
+        borderRadius: 999,
+        _input: {
           px: '$4',
           _web: {
             outlineWidth: 0,
@@ -280,15 +280,15 @@ export const Input = createStyle({
           },
         },
         ':invalid': {
-          'borderColor': '$error700',
-          '_web': {
+          borderColor: '$error700',
+          _web: {
             boxShadow: 'inset 0 0 0 1px $error700',
           },
           ':hover': {
             borderColor: '$error700',
           },
           ':focus': {
-            'borderColor': '$error700',
+            borderColor: '$error700',
             ':hover': {
               borderColor: '$error700',
               _web: {
@@ -306,7 +306,7 @@ export const Input = createStyle({
           },
         },
 
-        '_dark': {
+        _dark: {
           ':focus': {
             borderColor: '$primary400',
             _web: {
@@ -314,15 +314,15 @@ export const Input = createStyle({
             },
           },
           ':invalid': {
-            'borderColor': '$error400',
-            '_web': {
+            borderColor: '$error400',
+            _web: {
               boxShadow: 'inset 0 0 0 1px $error400',
             },
             ':hover': {
               borderColor: '$error400',
             },
             ':focus': {
-              'borderColor': '$error400',
+              borderColor: '$error400',
               ':hover': {
                 borderColor: '$error400',
                 _web: {
@@ -344,8 +344,8 @@ export const Input = createStyle({
     },
   },
 
-  'defaultProps': {
+  defaultProps: {
     size: 'md',
     variant: 'outline',
   },
-});
+})
