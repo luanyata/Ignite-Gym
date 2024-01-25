@@ -19,7 +19,7 @@ export function HomeHeader() {
           Olá,
         </Text>
 
-        <Heading color="$gray100" fontSize="$md">
+        <Heading color="$gray100" fontSize="$md" fontFamily="$heading">
           Luan
         </Heading>
       </VStack>

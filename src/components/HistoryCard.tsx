@@ -18,16 +18,22 @@ export function HistoryCard() {
           fontSize="$md"
           textTransform="capitalize"
           numberOfLines={1}
+          fontFamily="$heading"
         >
           Costas
         </Heading>
 
-        <Text color="$gray100" fontSize="$lg" numberOfLines={1}>
+        <Text
+          color="$gray100"
+          fontSize="$lg"
+          numberOfLines={1}
+          fontFamily="$body"
+        >
           Puxada frontal
         </Text>
       </VStack>
 
-      <Text color="$gray300" fontSize="$md">
+      <Text color="$gray300" fontSize="$md" fontFamily="$body">
         08:56
       </Text>
     </HStack>
