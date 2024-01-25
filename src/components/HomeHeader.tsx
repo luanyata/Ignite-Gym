@@ -11,6 +11,7 @@ export function HomeHeader() {
         source={{ uri: 'https://github.com/luanyata.png' }}
         alt="Imagem do usuário"
         mr="$4"
+        size="sm"
       />
 
       <VStack flex={1}>
