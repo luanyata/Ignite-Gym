@@ -8,6 +8,9 @@ import { useNavigation } from '@react-navigation/native'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
+import { api } from '../services/api'
+import { AppError } from '../utils/AppError'
+import { Toast } from '../components/Toast'
 
 type FormDataProps = {
   name: string
@@ -44,13 +47,19 @@ export const SignUp = () => {
     navigation.goBack()
   }
 
-  const handleSignUp = ({
-    name,
-    email,
-    password,
-    passwordConfirm,
-  }: FormDataProps) => {
-    console.log({ name, email, password, passwordConfirm })
+  const handleSignUp = async ({ name, email, password }: FormDataProps) => {
+    try {
+      const response = await api.post('/users', { name, email, password })
+      console.log(response.data)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível criar a conta. Tente novamente mais tarde'
+
+      return <Toast type="error" message={title} />
+    }
   }
 
   return (

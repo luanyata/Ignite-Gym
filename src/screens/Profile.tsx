@@ -7,8 +7,6 @@ import {
   Text,
   Heading,
   View,
-  useToast,
-  useToken,
 } from '@gluestack-ui/themed'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
@@ -20,6 +18,7 @@ import { ScreenHeader } from '@components/ScreenHeader'
 import { UserPhoto } from '@components/UserPhoto'
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
+import { Toast } from '../components/Toast'
 
 type FormDataProps = {
   name: string
@@ -60,9 +59,6 @@ export const Profile = () => {
     resolver: yupResolver(profileSchema),
   })
 
-  const red500 = useToken('colors', 'red500')
-  const toast = useToast()
-
   const handlePhotoSelected = async () => {
     setPhotoIsLoading(true)
 
@@ -88,22 +84,12 @@ export const Profile = () => {
           photoInfo.size &&
           photoInfo.size / 1024 / 1024 > 2
         ) {
-          return toast.show({
-            render: () => (
-              <View>
-                <Text color="$white">
-                  Essa imagem é muito grande. Escolha uma de até 5MB.
-                </Text>
-              </View>
-            ),
-            placement: 'top',
-            containerStyle: {
-              backgroundColor: red500,
-              paddingLeft: 10,
-              paddingRight: 10,
-              borderRadius: 5,
-            },
-          })
+          return (
+            <Toast
+              type="error"
+              message="Essa imagem é muito grande. Escolha uma de até 5MB."
+            />
+          )
         }
 
         setUserPhoto(photoUri)

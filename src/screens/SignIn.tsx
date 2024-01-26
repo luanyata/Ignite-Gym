@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Center, Heading, ScrollView, Text, VStack } from '@gluestack-ui/themed'
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
@@ -9,6 +10,9 @@ import { AuthRoutesProps } from '../routes/auth.routes'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, useForm } from 'react-hook-form'
+import { AppError } from '@utils/AppError'
+import { useAuth } from '@hooks/useAuth'
+import { Toast } from '../components/Toast'
 
 type FormDataProps = {
   email: string
@@ -24,6 +28,10 @@ const signInSchema = yup.object({
 })
 
 export const SignIn = () => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { singIn } = useAuth()
+
   const {
     control,
     handleSubmit,
@@ -38,8 +46,21 @@ export const SignIn = () => {
     navigation.navigate('signUp')
   }
 
-  const handleSignIn = ({ email, password }: FormDataProps) => {
-    console.log({ email, password })
+  const handleSignIn = async ({ email, password }: FormDataProps) => {
+    try {
+      setIsLoading(true)
+      await singIn(email, password)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível entrar. Tente novamente mais tarde.'
+
+      setIsLoading(false)
+
+      return <Toast type="error" message={title} />
+    }
   }
 
   return (
