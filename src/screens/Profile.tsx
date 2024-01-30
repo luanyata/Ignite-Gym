@@ -7,6 +7,8 @@ import {
   Text,
   Heading,
   View,
+  useToast,
+  useToken,
 } from '@gluestack-ui/themed'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
@@ -51,6 +53,10 @@ export const Profile = () => {
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
   const [userPhoto, setUserPhoto] = useState('https://github.com/luanyata.png')
 
+  const red500 = useToken('colors', 'red500')
+  const green500 = useToken('colors', 'green500')
+  const toast = useToast()
+
   const {
     control,
     handleSubmit,
@@ -84,12 +90,18 @@ export const Profile = () => {
           photoInfo.size &&
           photoInfo.size / 1024 / 1024 > 2
         ) {
-          return (
-            <Toast
-              type="error"
-              message="Essa imagem é muito grande. Escolha uma de até 5MB."
-            />
-          )
+          toast.show({
+            render: () => (
+              <Toast message="Essa imagem é muito grande. Escolha uma de até 5MB." />
+            ),
+            placement: 'top',
+            containerStyle: {
+              backgroundColor: red500,
+              paddingLeft: 10,
+              paddingRight: 10,
+              borderRadius: 5,
+            },
+          })
         }
 
         setUserPhoto(photoUri)

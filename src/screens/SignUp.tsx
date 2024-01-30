@@ -1,4 +1,12 @@
-import { Center, Heading, ScrollView, Text, VStack } from '@gluestack-ui/themed'
+import {
+  Center,
+  Heading,
+  ScrollView,
+  Text,
+  VStack,
+  useToast,
+  useToken,
+} from '@gluestack-ui/themed'
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
 import { Input } from '@components/Input'
@@ -41,6 +49,10 @@ export const SignUp = () => {
     resolver: yupResolver(signUpSchema),
   })
 
+  const red500 = useToken('colors', 'red500')
+  const green500 = useToken('colors', 'green500')
+  const toast = useToast()
+
   const navigation = useNavigation()
 
   const handleGoBack = () => {
@@ -49,8 +61,18 @@ export const SignUp = () => {
 
   const handleSignUp = async ({ name, email, password }: FormDataProps) => {
     try {
-      const response = await api.post('/users', { name, email, password })
-      console.log(response.data)
+      await api.post('/users', { name, email, password })
+
+      toast.show({
+        render: () => <Toast message="Conta criada com sucesso!" />,
+        placement: 'top',
+        containerStyle: {
+          backgroundColor: green500,
+          paddingLeft: 10,
+          paddingRight: 10,
+          borderRadius: 5,
+        },
+      })
     } catch (error) {
       const isAppError = error instanceof AppError
 
@@ -58,7 +80,16 @@ export const SignUp = () => {
         ? error.message
         : 'Não foi possível criar a conta. Tente novamente mais tarde'
 
-      return <Toast type="error" message={title} />
+      toast.show({
+        render: () => <Toast message={title} />,
+        placement: 'top',
+        containerStyle: {
+          backgroundColor: red500,
+          paddingLeft: 10,
+          paddingRight: 10,
+          borderRadius: 5,
+        },
+      })
     }
   }
 

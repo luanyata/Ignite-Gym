@@ -1,5 +1,13 @@
 import { useState } from 'react'
-import { Center, Heading, ScrollView, Text, VStack } from '@gluestack-ui/themed'
+import {
+  Center,
+  Heading,
+  ScrollView,
+  Text,
+  VStack,
+  useToast,
+  useToken,
+} from '@gluestack-ui/themed'
 import BackgroundImg from '@assets/background.png'
 import LogoSvg from '@assets/logo.svg'
 import { Input } from '@components/Input'
@@ -29,6 +37,9 @@ const signInSchema = yup.object({
 
 export const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false)
+  const toast = useToast()
+
+  const red500 = useToken('colors', 'red500')
 
   const { singIn } = useAuth()
 
@@ -59,7 +70,16 @@ export const SignIn = () => {
 
       setIsLoading(false)
 
-      return <Toast type="error" message={title} />
+      toast.show({
+        render: () => <Toast message={title} />,
+        placement: 'top',
+        containerStyle: {
+          backgroundColor: red500,
+          paddingLeft: 10,
+          paddingRight: 10,
+          borderRadius: 5,
+        },
+      })
     }
   }
 
