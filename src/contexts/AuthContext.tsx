@@ -6,8 +6,8 @@ import {
   storageUserSave,
 } from '@storage/storageUser'
 
-import { api } from '@services/api'
 import { UserDTO } from '@dtos/UserDTO'
+import { api } from '@services/api'
 import {
   storageAuthTokenGet,
   storageAuthTokenRemove,
@@ -17,6 +17,7 @@ import {
 export type AuthContextDataProps = {
   user: UserDTO
   singIn: (email: string, password: string) => Promise<void>
+  updateUserProfile: (userUpdated: UserDTO) => Promise<void>
   signOut: () => Promise<void>
   isLoadingUserStorageData: boolean
 }
@@ -73,6 +74,11 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     }
   }
 
+  const updateUserProfile = async (userUpdated: UserDTO) => {
+    setUser(userUpdated)
+    await storageUserSave(userUpdated)
+  }
+
   const loadUserData = async () => {
     try {
       setIsLoadingUserStorageData(true)
@@ -97,6 +103,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       value={{
         user,
         singIn,
+        updateUserProfile,
         signOut,
         isLoadingUserStorageData,
       }}

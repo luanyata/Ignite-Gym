@@ -1,19 +1,60 @@
-import { useState } from 'react'
-import { Text, Heading, SectionList, VStack } from '@gluestack-ui/themed'
 import { HistoryCard } from '@components/HistoryCard'
 import { ScreenHeader } from '@components/ScreenHeader'
+import { HistoryByDayDTO } from '@dtos/HistoryByDayDTO'
+import {
+  Heading,
+  SectionList,
+  Text,
+  VStack,
+  useToast,
+  useToken,
+} from '@gluestack-ui/themed'
+import { useFocusEffect } from '@react-navigation/native'
+import { api } from '@services/api'
+import { AppError } from '@utils/AppError'
+import { useCallback, useState } from 'react'
+import { Toast } from '../components/Toast'
+import { HistoryDTO } from '../dtos/HistoryDTO'
 
 export const History = () => {
-  const [exercises, setExercises] = useState([
-    {
-      title: '26.08.22',
-      data: ['Puxada frontal', 'Remada unilateral'],
-    },
-    {
-      title: '27.08.22',
-      data: ['Puxada frontal'],
-    },
-  ])
+  const [isLoading, setIsLoading] = useState(true)
+  const [exercises, setExercises] = useState<HistoryByDayDTO[]>([])
+
+  const toast = useToast()
+  const red500 = useToken('colors', 'red500')
+
+  const fetchHistory = async () => {
+    try {
+      setIsLoading(true)
+      const response = await api.get('/history')
+
+      setExercises(response.data)
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível carregar os detalhes do exercício'
+
+      toast.show({
+        render: () => <Toast message={title} />,
+        placement: 'top',
+        containerStyle: {
+          backgroundColor: red500,
+          paddingLeft: 10,
+          paddingRight: 10,
+          borderRadius: 5,
+        },
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchHistory()
+    }, []),
+  )
 
   return (
     <VStack flex={1}>
@@ -21,9 +62,9 @@ export const History = () => {
 
       <SectionList
         sections={exercises}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => <HistoryCard />}
-        renderSectionHeader={({ section }: { session: { title: string } }) => (
+        keyExtractor={(item) => (item as HistoryDTO).id}
+        renderItem={({ item }) => <HistoryCard data={item as HistoryDTO} />}
+        renderSectionHeader={({ section }) => (
           <Heading color="$gray200" fontSize="$md" mt="$10" mb="$3">
             {section.title}
           </Heading>

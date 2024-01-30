@@ -1,20 +1,20 @@
-import HomeSvg from '@assets/home.svg'
 import HistorySvg from '@assets/history.svg'
+import HomeSvg from '@assets/home.svg'
 import ProfileSvg from '@assets/profile.svg'
 
-import { Home } from '@screens/Home'
-import { Exercise } from '@screens/Exercise'
-import { History } from '@screens/History'
-import { Profile } from '@screens/Profile'
+import { useToken } from '@gluestack-ui/themed'
 import {
   BottomTabNavigationProp,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs'
-import { useToken } from '@gluestack-ui/themed'
+import { Exercise } from '@screens/Exercise'
+import { History } from '@screens/History'
+import { Home } from '@screens/Home'
+import { Profile } from '@screens/Profile'
 
 type AppRoutes = {
   home: undefined
-  exercise: undefined
+  exercise: { exerciseId: string }
   profile: undefined
   history: undefined
 }

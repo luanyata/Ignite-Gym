@@ -1,6 +1,11 @@
+import { HistoryDTO } from '@dtos/HistoryDTO'
 import { Heading, HStack, Text, VStack } from '@gluestack-ui/themed'
 
-export function HistoryCard() {
+type Props = {
+  data: HistoryDTO
+}
+
+export const HistoryCard = ({ data }: Props) => {
   return (
     <HStack
       w="$full"
@@ -20,7 +25,7 @@ export function HistoryCard() {
           numberOfLines={1}
           fontFamily="$heading"
         >
-          Costas
+          {data.group}
         </Heading>
 
         <Text
@@ -29,12 +34,12 @@ export function HistoryCard() {
           numberOfLines={1}
           fontFamily="$body"
         >
-          Puxada frontal
+          {data.name}
         </Text>
       </VStack>
 
       <Text color="$gray300" fontSize="$md" fontFamily="$body">
-        08:56
+        {data.hour}
       </Text>
     </HStack>
   )

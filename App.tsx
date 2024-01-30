@@ -1,15 +1,15 @@
 /* eslint-disable camelcase */
-import { StatusBar } from 'react-native'
+import { Loading } from '@components/Loading'
+import { AuthContextProvider } from '@contexts/AuthContext'
 import {
-  useFonts,
   Roboto_400Regular,
   Roboto_700Bold,
+  useFonts,
 } from '@expo-google-fonts/roboto'
 import { GluestackUIProvider } from '@gluestack-ui/themed'
-import { Loading } from '@components/Loading'
+import { StatusBar } from 'react-native'
 import { config } from './config/gluestack-ui.config'
 import { Routes } from './src/routes'
-import { AuthContextProvider } from './src/contexts/AuthContext'
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold })

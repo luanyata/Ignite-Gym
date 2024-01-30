@@ -1,6 +1,5 @@
-import { View } from 'react-native'
+import { Text, View } from '@gluestack-ui/themed'
 import React from 'react'
-import { Text } from '@gluestack-ui/themed'
 
 type Props = {
   message: string
@@ -8,7 +7,7 @@ type Props = {
 
 export const Toast = ({ message }: Props) => {
   return (
-    <View>
+    <View py="$5">
       <Text color="$white">{message}</Text>
     </View>
   )

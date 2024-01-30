@@ -1,4 +1,4 @@
-import { Text, Pressable } from '@gluestack-ui/themed'
+import { Pressable, Text } from '@gluestack-ui/themed'
 import { ComponentProps } from 'react'
 
 type Props = ComponentProps<typeof Pressable> & {
@@ -6,7 +6,7 @@ type Props = ComponentProps<typeof Pressable> & {
   isActive: boolean
 }
 
-export function Group({ name, isActive, ...rest }: Props) {
+export const Group = ({ name, isActive, ...rest }: Props) => {
   return (
     <Pressable
       mr="$3"

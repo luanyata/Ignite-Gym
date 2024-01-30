@@ -1,5 +1,5 @@
-import { ComponentProps } from 'react'
 import { Image } from '@gluestack-ui/themed'
+import { ComponentProps } from 'react'
 
 type Props = ComponentProps<typeof Image>
 

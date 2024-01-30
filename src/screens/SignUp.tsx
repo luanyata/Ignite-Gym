@@ -1,3 +1,8 @@
+import BackgroundImg from '@assets/background.png'
+import LogoSvg from '@assets/logo.svg'
+import { Button } from '@components/Button'
+import { Input } from '@components/Input'
+import { Toast } from '@components/Toast'
 import {
   Center,
   Heading,
@@ -7,20 +12,15 @@ import {
   useToast,
   useToken,
 } from '@gluestack-ui/themed'
-import BackgroundImg from '@assets/background.png'
-import LogoSvg from '@assets/logo.svg'
-import { Input } from '@components/Input'
-import { Image } from 'react-native'
-import { Button } from '../components/Button'
-import { useNavigation } from '@react-navigation/native'
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Controller, useForm } from 'react-hook-form'
-import { api } from '../services/api'
-import { AppError } from '../utils/AppError'
-import { Toast } from '../components/Toast'
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '@hooks/useAuth'
+import { useNavigation } from '@react-navigation/native'
+import { api } from '@services/api'
+import { AppError } from '@utils/AppError'
 import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { Image } from 'react-native'
+import * as yup from 'yup'
 
 type FormDataProps = {
   name: string

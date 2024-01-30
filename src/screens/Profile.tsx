@@ -1,26 +1,30 @@
-import { useState } from 'react'
-import { TouchableOpacity } from 'react-native'
 import {
   Center,
-  ScrollView,
-  VStack,
-  Text,
   Heading,
+  ScrollView,
+  Text,
+  VStack,
   View,
   useToast,
   useToken,
 } from '@gluestack-ui/themed'
-import * as ImagePicker from 'expo-image-picker'
-import * as FileSystem from 'expo-file-system'
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import * as FileSystem from 'expo-file-system'
+import * as ImagePicker from 'expo-image-picker'
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { TouchableOpacity } from 'react-native'
+import * as yup from 'yup'
 
-import { ScreenHeader } from '@components/ScreenHeader'
-import { UserPhoto } from '@components/UserPhoto'
-import { Input } from '@components/Input'
+import defaulUserPhotoImg from '@assets/userPhotoDefault.png'
 import { Button } from '@components/Button'
-import { Toast } from '../components/Toast'
+import { Input } from '@components/Input'
+import { ScreenHeader } from '@components/ScreenHeader'
+import { Toast } from '@components/Toast'
+import { UserPhoto } from '@components/UserPhoto'
+import { useAuth } from '@hooks/useAuth'
+import { api } from '@services/api'
+import { AppError } from '@utils/AppError'
 
 type FormDataProps = {
   name: string
@@ -50,18 +54,24 @@ const profileSchema = yup.object({
 const PHOTO_SIZE = 'lg'
 
 export const Profile = () => {
+  const [isUpdating, setIsUpdating] = useState(false)
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
-  const [userPhoto, setUserPhoto] = useState('https://github.com/luanyata.png')
 
   const red500 = useToken('colors', 'red500')
   const green500 = useToken('colors', 'green500')
   const toast = useToast()
+
+  const { user, updateUserProfile } = useAuth()
 
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormDataProps>({
+    defaultValues: {
+      name: user.name,
+      email: user.email,
+    },
     resolver: yupResolver(profileSchema),
   })
 
@@ -88,9 +98,9 @@ export const Profile = () => {
         if (
           photoInfo.exists &&
           photoInfo.size &&
-          photoInfo.size / 1024 / 1024 > 2
+          photoInfo.size / 1024 / 1024 > 5
         ) {
-          toast.show({
+          return toast.show({
             render: () => (
               <Toast message="Essa imagem é muito grande. Escolha uma de até 5MB." />
             ),
@@ -104,7 +114,44 @@ export const Profile = () => {
           })
         }
 
-        setUserPhoto(photoUri)
+        const fileExtension = photoInfo.uri.split('.').pop()
+
+        const photoFile = {
+          uri: photoInfo.uri,
+          name: `${user.name}.${fileExtension}`.toLowerCase(),
+          type: `${photoSelected.assets[0].type}/${fileExtension}`,
+        } as any
+
+        const userPhotoUploadForm = new FormData()
+
+        userPhotoUploadForm.append('avatar', photoFile)
+
+        const avatarUpdtedResponse = await api.patch(
+          '/users/avatar',
+          userPhotoUploadForm,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        )
+
+        const userUpdated = user
+
+        userUpdated.avatar = avatarUpdtedResponse.data.avatar
+
+        await updateUserProfile(userUpdated)
+
+        toast.show({
+          render: () => <Toast message="Foto atualizada" />,
+          placement: 'top',
+          containerStyle: {
+            backgroundColor: green500,
+            paddingLeft: 10,
+            paddingRight: 10,
+            borderRadius: 5,
+          },
+        })
       }
     } catch (error) {
       console.log(error)
@@ -113,14 +160,46 @@ export const Profile = () => {
     }
   }
 
-  const handleUpdateProfile = async ({
-    name,
-    email,
-    oldPassword,
-    password,
-    passwordConfirm,
-  }: FormDataProps) => {
-    console.log({ name, email, oldPassword, password, passwordConfirm })
+  const handleUpdateProfile = async (data: FormDataProps) => {
+    try {
+      setIsUpdating(true)
+
+      const userUpdated = user
+      userUpdated.name = data.name
+
+      await api.put('/users', data)
+
+      await updateUserProfile(userUpdated)
+
+      toast.show({
+        render: () => <Toast message="Perfil atualizado com sucesso!" />,
+        placement: 'top',
+        containerStyle: {
+          backgroundColor: green500,
+          paddingLeft: 10,
+          paddingRight: 10,
+          borderRadius: 5,
+        },
+      })
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError
+        ? error.message
+        : 'Não foi possível atualizar os dados. Tente novamente mais tarde.'
+
+      toast.show({
+        render: () => <Toast message={title} />,
+        placement: 'top',
+        containerStyle: {
+          backgroundColor: red500,
+          paddingLeft: 10,
+          paddingRight: 10,
+          borderRadius: 5,
+        },
+      })
+    } finally {
+      setIsUpdating(false)
+    }
   }
 
   return (
@@ -135,7 +214,11 @@ export const Profile = () => {
             </View>
           ) : (
             <UserPhoto
-              source={{ uri: userPhoto }}
+              source={
+                user.avatar
+                  ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
+                  : defaulUserPhotoImg
+              }
               alt="Foto do usuário"
               size={PHOTO_SIZE}
             />
@@ -232,6 +315,7 @@ export const Profile = () => {
             title="Atualizar"
             mt="$4"
             onPress={handleSubmit(handleUpdateProfile)}
+            isLoading={isUpdating}
           />
         </Center>
       </ScrollView>
