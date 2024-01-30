@@ -8,8 +8,8 @@ import {
 } from '@expo-google-fonts/roboto'
 import { GluestackUIProvider } from '@gluestack-ui/themed'
 import { StatusBar } from 'react-native'
-import { config } from './config/gluestack-ui.config'
-import { Routes } from './src/routes'
+import { config } from '../config/gluestack-ui.config'
+import { Routes } from '../src/routes'
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold })
