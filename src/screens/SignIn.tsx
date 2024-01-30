@@ -145,7 +145,11 @@ export const SignIn = () => {
             )}
           />
 
-          <Button title="Acessar" onPress={handleSubmit(handleSignIn)} />
+          <Button
+            title="Acessar"
+            isLoading={isLoading}
+            onPress={handleSubmit(handleSignIn)}
+          />
         </Center>
         <Center mt="$1/4">
           <Text color="$gray100" fontSize="$sm" mb="$3" fontFamily="$body">

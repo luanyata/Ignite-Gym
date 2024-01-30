@@ -1,11 +1,22 @@
-import { ButtonText, Button as GlueButton } from '@gluestack-ui/themed'
+import {
+  ButtonSpinner,
+  ButtonText,
+  Button as GlueButton,
+} from '@gluestack-ui/themed'
 import { ComponentProps } from 'react'
 
 type ButtonProps = ComponentProps<typeof GlueButton> & {
   title: string
+  isLoading?: boolean
 }
 
-export const Button = ({ title, variant, onPress, ...rest }: ButtonProps) => {
+export const Button = ({
+  title,
+  variant,
+  isLoading,
+  onPress,
+  ...rest
+}: ButtonProps) => {
   return (
     <GlueButton
       w="$full"
@@ -17,8 +28,11 @@ export const Button = ({ title, variant, onPress, ...rest }: ButtonProps) => {
       borderColor={variant === 'outline' ? '$green700' : '$transparent'}
       $active-bg={variant === 'outline' ? '$gray500' : '$green500'}
       variant={variant}
+      disabled={isLoading}
       {...rest}
     >
+      {isLoading && <ButtonSpinner mr="$1" />}
+
       <ButtonText
         color={variant === 'outline' ? '$green500' : '$white'}
         fontFamily="$heading"

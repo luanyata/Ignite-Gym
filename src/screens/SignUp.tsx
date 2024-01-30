@@ -19,6 +19,8 @@ import { Controller, useForm } from 'react-hook-form'
 import { api } from '../services/api'
 import { AppError } from '../utils/AppError'
 import { Toast } from '../components/Toast'
+import { useAuth } from '../hooks/useAuth'
+import { useState } from 'react'
 
 type FormDataProps = {
   name: string
@@ -41,6 +43,10 @@ const signUpSchema = yup.object({
 })
 
 export const SignUp = () => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { singIn } = useAuth()
+
   const {
     control,
     handleSubmit,
@@ -50,7 +56,6 @@ export const SignUp = () => {
   })
 
   const red500 = useToken('colors', 'red500')
-  const green500 = useToken('colors', 'green500')
   const toast = useToast()
 
   const navigation = useNavigation()
@@ -61,18 +66,11 @@ export const SignUp = () => {
 
   const handleSignUp = async ({ name, email, password }: FormDataProps) => {
     try {
+      setIsLoading(true)
+
       await api.post('/users', { name, email, password })
 
-      toast.show({
-        render: () => <Toast message="Conta criada com sucesso!" />,
-        placement: 'top',
-        containerStyle: {
-          backgroundColor: green500,
-          paddingLeft: 10,
-          paddingRight: 10,
-          borderRadius: 5,
-        },
-      })
+      await singIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
 
@@ -186,6 +184,7 @@ export const SignUp = () => {
 
           <Button
             title="Criar e acessar"
+            isLoading={isLoading}
             onPress={handleSubmit(handleSignUp)}
           />
         </Center>
